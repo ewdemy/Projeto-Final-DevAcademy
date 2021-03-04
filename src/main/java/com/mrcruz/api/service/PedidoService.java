@@ -45,9 +45,6 @@ public class PedidoService {
 		Optional<Pedido> pedidoTemp = pedidoRepository.findById(id);
 		if(pedidoTemp.isPresent()) {
 			if(id.equals(pedido.getId())) {
-				if(pedido.getStatus() != null) {
-					throw new Negocioexception("status não pode ser alterado....");
-				}
 				pedido.setStatus(pedidoTemp.get().getStatus());
 				pedido.setValorTotalProdutos();
 				pedido.setValorTotal();

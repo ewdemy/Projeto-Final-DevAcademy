@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mrcruz.api.model.ItemPedido;
 import com.mrcruz.api.model.Pedido;
-import com.mrcruz.api.model.enums.Status;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
@@ -17,7 +16,6 @@ import io.restassured.specification.RequestSpecification;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.math.BigDecimal;
@@ -116,7 +114,7 @@ public class PedidoControllerTest {
 				given()
 				.spec(requisicao)
 				.when()
-				.post("/"+pedidoCadastrado.getId()+"/status/PRONTO")
+				.post("/"+pedidoCadastrado.getId()+"/status/ENTREGUE")
 				.then()
 				.statusCode(422);
 	}
@@ -138,8 +136,8 @@ public class PedidoControllerTest {
 		assertNotNull(pedidoCadastrado.getId(), "ID do pedido não gerado");
 		
 		pedidoCadastrado.setNomeCliente("Patrick");
-		
-		Pedido pedidoAlterado = 
+
+		Pedido pedidoAlterado =
 				given()
 				.spec(requisicao)
 				.body(objectMapper.writeValueAsString(pedidoCadastrado))
@@ -169,7 +167,6 @@ public class PedidoControllerTest {
 		assertNotNull(pedidoCadastrado, "pedido não foi cadastrado");
 		assertNotNull(pedidoCadastrado.getId(), "ID do pedido não gerado");
 		
-		
 				given()
 				.spec(requisicao)
 				.when()
@@ -185,10 +182,6 @@ public class PedidoControllerTest {
 				.statusCode(404);
 			
 	}
-	
-	
-	
-	
 	
 	private Pedido dadoUmPedido() {
 		Pedido pedido = new Pedido();
@@ -248,26 +241,6 @@ public class PedidoControllerTest {
 		return pedido;
 	}
 	
-	private Pedido dadoUmPedidoComStatus() {
-		Pedido pedido = new Pedido();
-		ItemPedido item = new ItemPedido();
-		item.setDescricao("Coxinha");
-		item.setPrecoUnitario(new BigDecimal(3.5));
-		item.setQuantidade(5);
-		
-		List<ItemPedido> itens = new ArrayList<ItemPedido>();
-		itens.add(item);
-		
-
-		pedido.setNomeCliente("Bob Jhon");
-		pedido.setEndereco("Rua A");
-		pedido.setTaxa(new BigDecimal(2.5));
-		pedido.setTelefone("9999898988");
-		pedido.setItens(itens);
-		pedido.setValorTotalProdutos();
-		pedido.setValorTotal();
-		
-		return pedido;
-	}
+	
 	
 }
