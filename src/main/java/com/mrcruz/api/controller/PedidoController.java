@@ -37,6 +37,11 @@ public class PedidoController {
 		return pedidoService.buscarPedidoPorId(id);
 	}
 	
+	@GetMapping("/busca/{nomeCliente}")
+	public List<Pedido> buscarPorCliente(@PathVariable String nomeCliente){
+		return pedidoService.buscarPorCliente(nomeCliente);
+	}
+	
 	@GetMapping
 	public List<Pedido> listarPedidos(){
 		return pedidoService.listar();

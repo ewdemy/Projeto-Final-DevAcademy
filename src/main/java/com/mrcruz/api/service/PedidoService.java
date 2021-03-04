@@ -24,9 +24,6 @@ public class PedidoService {
 	@Autowired
 	private PedidoRepository pedidoRepository;
 	
-	@Autowired
-	private ItemPedidoRepository itemRepository;
-	
 	public List<Pedido> listar(){
 		return pedidoRepository.findAll();
 	}
@@ -48,11 +45,12 @@ public class PedidoService {
 		Optional<Pedido> pedidoTemp = pedidoRepository.findById(id);
 		if(pedidoTemp.isPresent()) {
 			if(id.equals(pedido.getPedido())) {
-				System.out.println(pedido.getStatus());
 				if(pedido.getStatus() != null) {
 					throw new Negocioexception("status não pode ser alterado....");
 				}
 				pedido.setStatus(pedidoTemp.get().getStatus());
+				pedido.setValorTotalProdutos();
+				pedido.setValorTotal();
 				return pedidoRepository.save(pedido);
 			} else {
 				throw new UnsupportedOperationException("Id informado diferente do Pedido!");
@@ -75,5 +73,16 @@ public class PedidoService {
 
 	public Pedido buscarPedidoPorId(Long id) {
 		return pedidoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+	}
+
+	public List<Pedido> buscarPorCliente(String nomeCliente) {
+		List<Pedido> pedidos = pedidoRepository.findByNomeClienteContainsIgnoreCase(nomeCliente);
+		
+		if(!pedidos.isEmpty()) {
+			return pedidos;
+		} else {
+			throw new EntityNotFoundException("Nome cliente: " + nomeCliente);
+		}
+		
 	}
 }
