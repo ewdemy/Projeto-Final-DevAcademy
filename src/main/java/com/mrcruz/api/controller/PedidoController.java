@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mrcruz.api.model.ItemPedido;
 import com.mrcruz.api.model.Pedido;
+import com.mrcruz.api.model.enums.Status;
 import com.mrcruz.api.repository.ItemPedidoRepository;
 import com.mrcruz.api.repository.PedidoRepository;
 import com.mrcruz.api.service.PedidoService;
@@ -68,6 +69,11 @@ public class PedidoController {
 	public void deletarPedido(@PathVariable Long id) {
 		pedidoService.delete(id);
 		
+	}
+	
+	@PostMapping("/{id}/status/{status}")
+	public void setStatus(@PathVariable Long id, @PathVariable Status status) {
+		pedidoService.setStatus(id, status);
 	}
 
 }

@@ -85,4 +85,31 @@ public class PedidoService {
 		}
 		
 	}
+
+	public void setStatus(Long id, Status status) {
+		Optional<Pedido> pedidoTemp = pedidoRepository.findById(id);
+		if(pedidoTemp.isPresent()) {
+			Pedido pedido = pedidoTemp.get();
+			
+			if(status.toString().equals("CANCELADO")) {
+				if(pedido.getStatus().toString().equals("EM_ROTA") || pedido.getStatus().toString().equals("ENTREGUE") || pedido.getStatus().toString().equals("CANCELADO")) {
+					throw new Negocioexception("status não pode ser alterado....");
+				} else {
+					pedido.setStatus(status);
+					pedidoRepository.save(pedido);
+				}
+			} else if(status.toString().equals("EM_ROTA") && !pedido.getStatus().toString().equals("PRONTO")) {
+				throw new Negocioexception("status não pode ser alterado....");
+			}else if(status.toString().equals("ENTREGUE") && !pedido.getStatus().toString().equals("EM_ROTA")) {
+				throw new Negocioexception("status não pode ser alterado....");
+			}else {
+				pedido.setStatus(status);
+				pedidoRepository.save(pedido);
+			}
+
+		} else {
+			throw new EntityNotFoundException("Pedido: " + id);
+		}
+		
+	}
 }
