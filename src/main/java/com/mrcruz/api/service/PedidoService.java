@@ -44,7 +44,7 @@ public class PedidoService {
 	public Pedido atualizar(Long id, Pedido pedido) {
 		Optional<Pedido> pedidoTemp = pedidoRepository.findById(id);
 		if(pedidoTemp.isPresent()) {
-			if(id.equals(pedido.getPedido())) {
+			if(id.equals(pedido.getId())) {
 				if(pedido.getStatus() != null) {
 					throw new Negocioexception("status não pode ser alterado....");
 				}
@@ -56,7 +56,7 @@ public class PedidoService {
 				throw new UnsupportedOperationException("Id informado diferente do Pedido!");
 			}
 		} else {
-			throw new EntityNotFoundException("Pedido: " + pedido.getPedido());
+			throw new EntityNotFoundException("Pedido: " + pedido.getId());
 		}
 		
 	}

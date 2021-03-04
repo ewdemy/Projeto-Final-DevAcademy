@@ -25,13 +25,14 @@ public class Pedido {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long pedido;
+	private Long id;
 	
 	@NotEmpty
 	private String nomeCliente;
 	private String endereco;
 	private String telefone;
 	private BigDecimal valorTotalProdutos;
+	@NotNull
 	private BigDecimal taxa;
 	private BigDecimal valorTotal;
 	
