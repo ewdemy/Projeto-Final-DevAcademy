@@ -6,6 +6,9 @@ import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mrcruz.api.exception.Negocioexception;
@@ -13,6 +16,8 @@ import com.mrcruz.api.model.Pedido;
 import com.mrcruz.api.model.enums.Status;
 import com.mrcruz.api.repository.ItemPedidoRepository;
 import com.mrcruz.api.repository.PedidoRepository;
+
+
 
 @Service
 public class PedidoService {
@@ -24,6 +29,11 @@ public class PedidoService {
 	
 	public List<Pedido> listar(){
 		return pedidoRepository.findAll();
+	}
+	
+	public Page<Pedido> listarPaginacao(Integer numPage, Integer tamPage) {
+		Pageable pageable = PageRequest.of(numPage, tamPage);
+		return pedidoRepository.findAll(pageable);
 	}
 	
 	public Pedido salvar(Pedido pedido) {
@@ -61,5 +71,9 @@ public class PedidoService {
 		}
 		
 		
+	}
+
+	public Pedido buscarPedidoPorId(Long id) {
+		return pedidoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 	}
 }
